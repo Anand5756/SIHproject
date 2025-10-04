@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Tourist Safety System</title>
+  <!-- Load Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Configure Tailwind to use Inter font and enable nested components -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <!-- Use Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <!-- Link to external CSS file for custom styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50">
+
+  <!-- Sticky Navigation Bar - HIDDEN IN SPLASH VIEW -->
+  <nav id="navbar" class="sticky top-0 z-50 bg-white shadow-lg hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <a href="javascript:void(0)" onclick="showSection('registration')" class="text-xl font-bold text-indigo-600">Tourist Safety Dashboard</a>
+        <div class="flex space-x-4 overflow-x-auto whitespace-nowrap p-2">
+          <!-- Updated navigation links to use JavaScript for section switching -->
+          <a href="javascript:void(0)" onclick="showSection('registration')" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out">Registration & IDs</a>
+          <a href="javascript:void(0)" onclick="showLastIDCard()" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium font-bold transition duration-150 ease-in-out">View Last Digital ID</a>
+          <a href="javascript:void(0)" onclick="showSection('checkin')" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out">Check-in Monitor</a>
+          <a href="javascript:void(0)" onclick="showSection('sos')" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out">SOS Panic</a>
+          <a href="javascript:void(0)" onclick="showSection('fir')" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out">e-FIR & Reports</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top" class="p-4 md:p-8 pt-6">
+    <!-- Header is hidden in splash mode -->
+    <!-- <h1 id="main-header" class="text-3xl font-extrabold mb-6 text-gray-800 hidden">Smart Tourist Safety Monitoring & Incident Response System</h1> -->
+
+    <!-- Stats Section (Visible across all views, but hidden initially) -->
+    <div id="stats-section" class="flex flex-wrap justify-between gap-4 mb-8 hidden">
+      <div class="stat flex-1 min-w-[150px] bg-white p-6 rounded-xl text-center shadow-lg border border-indigo-100">
+        <div id="totalIDs" class="text-4xl font-extrabold text-indigo-600">0</div>
+        <div class="text-sm font-medium text-gray-500 mt-1">Total IDs</div>
+      </div>
+      <div class="stat flex-1 min-w-[150px] bg-white p-6 rounded-xl text-center shadow-lg border border-green-100">
+        <div id="activeIDs" class="text-4xl font-extrabold text-green-600">0</div>
+        <div class="text-sm font-medium text-gray-500 mt-1">Active IDs</div>
+      </div>
+      <div class="stat flex-1 min-w-[150px] bg-white p-6 rounded-xl text-center shadow-lg border border-amber-100">
+        <div id="checkedIn" class="text-4xl font-extrabold text-amber-600">0</div>
+        <div class="text-sm font-medium text-gray-500 mt-1">Checked-in Tourists</div>
+      </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid lg:grid-cols-2 xl:grid-cols-3 gap-8">
+        
+      <!-- SPLASH SCREEN SECTION (New Default Page) -->
+      <div id="splash-screen-section" class="card bg-gray-50 p-6 rounded-xl shadow-none lg:col-span-3 min-h-[80vh] flex flex-col justify-between items-center text-center" data-group="splash">
+          
+          <!-- Logo/Visual Container -->
+          <div class="flex flex-col items-center mt-12 mb-8 flex-grow justify-center">
+              <!-- UPDATED: Added responsive sizing classes for better mobile layout -->
+              <div class="w-40 h-40 sm:w-56 sm:h-56 lg:w-64 lg:h-64 bg-black rounded-[50%] shadow-2xl flex items-center justify-center relative p-4" style="border-radius: 50% / 40%; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);">
+                  <img src="logo.jpeg" alt="RAH Logo" class="w-full h-full object-contain p-4">
+              </div>
+          </div>
+
+          <!-- Content -->
+          <div class="max-w-md mx-auto">
+              <!-- Responsive text size for WELCOME TO RAH! -->
+              <h2 class="text-3xl sm:text-4xl font-extrabold mb-4 text-gray-900">WELCOME TO RAH!</h2>
+              <p class="text-gray-600 text-base sm:text-lg leading-relaxed px-4">
+                  Welcome to **Explore India!** Embark on a journey through the vibrant colors, rich heritage, and breathtaking landscapes of India. From the majestic Himalayas in the north to the serene backwaters of the south, and from bustling cities to tranquil villages, our app brings the best of India right to your fingertips.
+              </p>
+          </div>
+
+          <!-- Navigation/Action -->
+          <div class="mb-12 w-full max-w-xs pt-12">
+              <!-- Dots indicator - simulating mobile page view -->
+              <div class="flex justify-center space-x-2 mb-6">
+                  <div class="w-2 h-2 bg-black rounded-full"></div>
+                  <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+                  <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+              </div>
+              <button onclick="hideSplashAndShowMain()" class="w-full bg-black text-white font-bold py-3 px-4 rounded-full text-lg shadow-xl hover:bg-gray-800 transition duration-150">
+                  Get Started
+              </button>
+          </div>
+      </div>
+      
+      <!-- Tourist Registration (Main Dashboard Content) -->
+      <div id="registration-section" class="card bg-white p-6 rounded-xl shadow-lg lg:col-span-1 border border-gray-200 hidden" data-group="registration">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-700">Tourist Registration</h2>
+        <form id="regForm">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-red-500">*</span></label>
+          <input type="text" id="fullName" required class="w-full p-2 mb-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email <span class="text-red-500">*</span></label>
+          <input type="email" id="email" required class="w-full p-2 mb-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Phone <span class="text-red-500">*</span></label>
+          <input type="tel" id="phone" required class="w-full p-2 mb-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+          
+          <!-- NEW PHOTO INPUT FIELD -->
+          <label class="block text-sm font-medium text-gray-700 mb-1">Upload ID Photo (JPG/PNG)</label>
+          <input type="file" id="photoFile" accept="image/*" class="w-full p-2 mb-3 border border-gray-300 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+          
+          <!-- NEW FIELDS for ID Card -->
+          <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth <span class="text-red-500">*</span></label>
+          <input type="date" id="dob" required class="w-full p-2 mb-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Nationality <span class="text-red-500">*</span></label>
+          <input type="text" id="nationality" required class="w-full p-2 mb-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+          
+          <label class="block text-sm font-medium text-gray-700 mb-1">Entry Point <span class="text-red-500">*</span></label>
+          <input type="text" id="entryPoint" required class="w-full p-2 mb-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+          
+          <!-- Document Fields: stack on small screens, side-by-side on medium screens and up -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
+              <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Document Type <span class="text-red-500">*</span></label>
+                  <select id="docType" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">Select</option>
+                    <option>Passport</option>
+                    <option>Aadhaar</option>
+                    <option>Voter ID</option>
+                  </select>
+              </div>
+              <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Document Number <span class="text-red-500">*</span></label>
+                  <input type="text" id="docNumber" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+          </div>
+          
+          <!-- Date Fields: stack on small screens, side-by-side on medium screens and up -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Check-in Date <span class="text-red-500">*</span></label>
+                  <input type="date" id="checkIn" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Check-out Date <span class="text-red-500">*</span></label>
+                  <input type="date" id="checkOut" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+          </div>
+
+          <div class="mt-4 border-t pt-4">
+            <strong class="text-lg text-gray-700">Itinerary</strong>
+            <div id="itineraryList" class="space-y-2"></div>
+            <button type="button" class="add-btn mt-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-150" id="addLocation">+ Add Location</button>
+          </div>
+          <div class="mt-4 border-t pt-4">
+            <strong class="text-lg text-gray-700">Emergency Contacts</strong>
+            <div id="emergencyList" class="space-y-2"></div>
+            <button type="button" class="add-btn mt-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-150" id="addEmergency">+ Add Contact</button>
+          </div>
+          
+          <div class="text-right mt-6">
+            <button class="add-btn bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition duration-150" type="submit">Register & Issue Digital ID</button>
+          </div>
+          <div id="regMsg" class="mt-4 text-sm font-medium"></div>
+        </form>
+      </div>
+
+      <!-- Issued Digital ID List Section (Main Dashboard Content) -->
+      <div id="id-list-section" class="card bg-white p-6 rounded-xl shadow-lg lg:col-span-1 border border-gray-200 xl:col-span-2 hidden" data-group="registration">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-700">Issued Digital IDs</h2>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Digital ID</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check-in</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+              </tr>
+            </thead>
+            <tbody id="idList" class="bg-white divide-y divide-gray-200">
+              <!-- Digital IDs will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- DIGITAL ID CARD VIEW (Main Dashboard Content) -->
+      <div id="digital-id-card-section" class="card bg-white p-6 rounded-xl shadow-lg lg:col-span-3 hidden" data-group="idcard">
+        <div class="flex justify-between items-center mb-4 border-b pb-4">
+            <h2 class="text-2xl font-semibold text-gray-700">View Digital ID Card</h2>
+            <button onclick="showSection('registration')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-3 rounded-lg text-sm transition duration-150">← Back to Registration</button>
+        </div>
+        
+        <div id="idCardContainer" class="max-w-xl mx-auto p-6 rounded-xl id-card">
+            <!-- ID Card content will be rendered here -->
+            <p class="text-center py-8 text-gray-400">Select a Digital ID from the "Issued Digital IDs" list to view its card.</p>
+        </div>
+      </div>
+
+
+      <!-- Tourist Check-in (Main Dashboard Content) -->
+      <div id="checkin-section" class="card bg-white p-6 rounded-xl shadow-lg lg:col-span-2 border border-gray-200 hidden" data-group="checkin">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-700">Tourist Check-in</h2>
+        
+        <!-- Check-in Form: stack inputs and button on small screens -->
+        <form id="checkinForm" class="flex flex-col sm:flex-row sm:items-end gap-4 mb-6">
+          <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Digital ID <span class="text-red-500">*</span></label>
+            <input type="text" id="checkinId" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+          </div>
+          <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Location <span class="text-red-500">*</span></label>
+            <input type="text" id="checkinLocation" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+          </div>
+          <button class="add-btn bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-150" type="submit">Check-in</button>
+        </form>
+        
+        <div id="checkinMsg" class="mt-2 text-sm font-medium"></div>
+
+        <div class="mt-6 border-t pt-4">
+          <strong class="text-lg text-gray-700 block mb-3">Current Check-ins</strong>
+          <input type="text" id="searchCheckin" placeholder="Search by name, ID, or location" class="w-full p-2 mb-4 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                </tr>
+              </thead>
+              <tbody id="checkinTbody" class="bg-white divide-y divide-gray-200">
+                <!-- Check-ins will be inserted here -->
+              </tbody>
+            </table>
+          </div>
+          <div id="noCheckins" class="hidden text-center text-gray-500 mt-4 text-sm">No check-ins found.</div>
+        </div>
+      </div>
+
+      <!-- SOS Panic Button (Main Dashboard Content) -->
+      <div id="sos-section" class="card bg-white p-6 rounded-xl shadow-lg border border-gray-200 hidden" data-group="sos">
+        <h2 class="text-2xl font-semibold mb-4 text-red-600">SOS Panic Button</h2>
+        <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 mb-4 text-red-800">
+            <p class="text-sm">In case of an emergency, authorities will be notified immediately. Use only when necessary.</p>
+        </div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Tourist Digital ID <span class="text-red-500">*</span></label>
+        <input type="text" id="sosId" placeholder="Enter your Digital ID" class="w-full p-2 mb-4 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500">
+        <button class="add-btn bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-150 w-full" id="sosBtn">🚨 Trigger SOS</button>
+        <div id="sosMsg" class="mt-4 text-sm font-medium"></div>
+      </div>
+
+      <!-- e-FIR Generation (Main Dashboard Content) -->
+      <div id="fir-generation-section" class="card bg-white p-6 rounded-xl shadow-lg border border-gray-200 hidden" data-group="fir">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-700">e-FIR Generation</h2>
+        <form id="firForm">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Digital ID <span class="text-red-500">*</span></label>
+          <input type="text" id="firId" required class="w-full p-2 mb-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Incident Type <span class="text-red-500">*</span></label>
+          <select id="firType" required class="w-full p-2 mb-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+            <option value="">Select Type</option>
+            <option>Theft</option>
+            <option>Assault</option>
+            <option>Lost Item</option>
+            <option>Other</option>
+          </select>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Description <span class="text-red-500">*</span></label>
+          <textarea id="firDesc" rows="4" required class="w-full p-2 mb-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Location <span class="text-red-500">*</span></label>
+          <input type="text" id="firLocation" required class="w-full p-2 mb-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Date of Incident <span class="text-red-500">*</span></label>
+          <input type="date" id="firDate" required class="w-full p-2 mb-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+          <div class="text-right mt-4">
+            <button class="add-btn bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-150" type="submit">Submit e-FIR</button>
+          </div>
+        </form>
+        <div id="firGenMsg" class="mt-4 text-sm font-medium"></div>
+      </div>
+
+      <!-- FIR Reports Table (Main Dashboard Content) -->
+      <div id="fir-reports-section" class="card bg-white p-6 rounded-xl shadow-lg lg:col-span-2 xl:col-span-3 hidden" data-group="fir">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-700">Submitted e-FIRs</h2>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+              </tr>
+            </thead>
+            <tbody id="firList" class="bg-white divide-y divide-gray-200">
+              <!-- FIR reports will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Link to external JavaScript file -->
+  <script src="script.js"></script>
+</body>
+</html>
